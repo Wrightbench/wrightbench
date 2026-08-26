@@ -53,12 +53,16 @@ Settings → Environments → New environment: **`release`**
       publishing jobs then pause for human approval).
 - [ ] Deployment branches and tags: allow only `main` and tags matching
       `v*`.
-- [ ] Add the environment **secrets** listed in
+- [ ] Add the environment **secrets and variables** listed in
       [docs/RELEASING.md](RELEASING.md#9-required-github-secrets):
-      `MAC_CSC_LINK`, `MAC_CSC_KEY_PASSWORD`, `APPLE_API_KEY_BASE64`,
-      `APPLE_API_KEY_ID`, `APPLE_API_ISSUER`, `WIN_CSC_LINK`,
-      `WIN_CSC_KEY_PASSWORD`.
-      Do **not** create these as repository-level secrets.
+      the five Apple secrets (`MAC_CSC_LINK`, `MAC_CSC_KEY_PASSWORD`,
+      `APPLE_API_KEY_BASE64`, `APPLE_API_KEY_ID`, `APPLE_API_ISSUER`)
+      plus **one** Windows signing mode — Azure Trusted Signing
+      (secrets `AZURE_TENANT_ID`/`AZURE_CLIENT_ID`/`AZURE_CLIENT_SECRET`
+      and variables `AZURE_SIGNING_ENDPOINT`/`AZURE_CODE_SIGNING_ACCOUNT`/
+      `AZURE_CERTIFICATE_PROFILE`) or a classic PFX
+      (`WIN_CSC_LINK`/`WIN_CSC_KEY_PASSWORD`).
+      Do **not** create any of these as repository-level secrets.
 
 ## 6. Releases
 

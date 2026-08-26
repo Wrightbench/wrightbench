@@ -292,22 +292,55 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Require Windows signing secrets (fail closed)
+      - name: Determine Windows signing mode (fail closed)
+        id: winmode
+        # Two mutually exclusive modes (docs/RELEASING.md §11):
+        #   azure — Azure Trusted Signing: secrets AZURE_TENANT_ID /
+        #           AZURE_CLIENT_ID / AZURE_CLIENT_SECRET plus environment
+        #           variables AZURE_SIGNING_ENDPOINT /
+        #           AZURE_CODE_SIGNING_ACCOUNT / AZURE_CERTIFICATE_PROFILE
+        #   pfx   — classic certificate file: WIN_CSC_LINK + WIN_CSC_KEY_PASSWORD
+        # Azure wins when any of its six values is set; a partial
+        # configuration of either mode is an error, never an unsigned build.
         env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
+          AZURE_CODE_SIGNING_ACCOUNT: ${{ vars.AZURE_CODE_SIGNING_ACCOUNT }}
+          AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_CERTIFICATE_PROFILE }}
           WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
-          missing=""
-          for name in WIN_CSC_LINK WIN_CSC_KEY_PASSWORD; do
-            if [ -z "${!name:-}" ]; then
-              missing="$missing $name"
+          azure_names="AZURE_TENANT_ID AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_SIGNING_ENDPOINT AZURE_CODE_SIGNING_ACCOUNT AZURE_CERTIFICATE_PROFILE"
+          azure_present=""
+          azure_missing=""
+          for name in $azure_names; do
+            if [ -n "${!name:-}" ]; then
+              azure_present="$azure_present $name"
+            else
+              azure_missing="$azure_missing $name"
             fi
           done
-          if [ -n "$missing" ]; then
-            echo "::error::Missing required release secrets:$missing. Production Windows installers must carry a timestamped Authenticode signature — configure the secrets in the 'release' environment (see docs/RELEASING.md). Refusing to build unsigned."
+
+          if [ -n "$azure_present" ]; then
+            if [ -n "$azure_missing" ]; then
+              echo "::error::Azure Trusted Signing is partially configured. Present:$azure_present. Missing:$azure_missing. Configure the complete set in the 'release' environment (secrets: AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET; variables: AZURE_SIGNING_ENDPOINT, AZURE_CODE_SIGNING_ACCOUNT, AZURE_CERTIFICATE_PROFILE). Refusing to build unsigned."
+              exit 1
+            fi
+            echo "Windows signing mode: Azure Trusted Signing"
+            echo "mode=azure" >> "$GITHUB_OUTPUT"
+          elif [ -n "${WIN_CSC_LINK:-}" ] || [ -n "${WIN_CSC_KEY_PASSWORD:-}" ]; then
+            if [ -z "${WIN_CSC_LINK:-}" ] || [ -z "${WIN_CSC_KEY_PASSWORD:-}" ]; then
+              echo "::error::PFX signing is partially configured — both WIN_CSC_LINK and WIN_CSC_KEY_PASSWORD are required. Refusing to build unsigned."
+              exit 1
+            fi
+            echo "Windows signing mode: PFX certificate"
+            echo "mode=pfx" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No Windows signing configuration found. Production installers must carry a timestamped Authenticode signature — configure either Azure Trusted Signing (secrets AZURE_TENANT_ID/AZURE_CLIENT_ID/AZURE_CLIENT_SECRET + variables AZURE_SIGNING_ENDPOINT/AZURE_CODE_SIGNING_ACCOUNT/AZURE_CERTIFICATE_PROFILE) or a PFX certificate (WIN_CSC_LINK + WIN_CSC_KEY_PASSWORD) in the 'release' environment. See docs/RELEASING.md §11. Refusing to build unsigned."
             exit 1
           fi
-          echo "All Windows signing secrets are present."
 
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -321,9 +354,32 @@ jobs:
       - name: Build application bundles
         run: npm run build
 
-      - name: Package and sign the installer
+      - name: Package and sign the installer (Azure Trusted Signing)
+        if: steps.winmode.outputs.mode == 'azure'
+        # Injecting win.azureSignOptions switches this electron-builder
+        # version to its Azure Trusted Signing manager (it installs the
+        # TrustedSigning PowerShell module itself and authenticates with the
+        # AZURE_* environment credential). Signatures are RFC3161-timestamped
+        # against Microsoft's timestamp service by default. Keeping the
+        # options out of package.json keeps smoke builds unsigned.
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
+          AZURE_CODE_SIGNING_ACCOUNT: ${{ vars.AZURE_CODE_SIGNING_ACCOUNT }}
+          AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_CERTIFICATE_PROFILE }}
+        run: |
+          npx electron-builder --win --x64 --publish never \
+            -c.forceCodeSigning=true \
+            -c.win.azureSignOptions.endpoint="$AZURE_SIGNING_ENDPOINT" \
+            -c.win.azureSignOptions.codeSigningAccountName="$AZURE_CODE_SIGNING_ACCOUNT" \
+            -c.win.azureSignOptions.certificateProfileName="$AZURE_CERTIFICATE_PROFILE"
+
+      - name: Package and sign the installer (PFX)
+        if: steps.winmode.outputs.mode == 'pfx'
         # WIN_CSC_LINK / WIN_CSC_KEY_PASSWORD are the exact env names this
-        # electron-builder version reads for Windows signing; signatures are
+        # electron-builder version reads for signtool signing; signatures are
         # RFC3161-timestamped by default. forceCodeSigning makes the build
         # fail rather than produce an unsigned installer.
         env:
@@ -333,6 +389,8 @@ jobs:
 
       - name: Verify the installer signature and metadata
         shell: pwsh
+        env:
+          EXPECTED_WIN_PUBLISHER: ${{ vars.EXPECTED_WIN_PUBLISHER }}
         run: ./scripts/verify-windows-installer.ps1 -Version $env:VERSION
 
       - name: Upload platform artifacts
