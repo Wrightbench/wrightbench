@@ -1,0 +1,46 @@
+name: Bug report
+description: Something in Wrightbench doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! Security vulnerabilities must **not** be filed
+        here — please use the private process in
+        [SECURITY.md](https://github.com/Wrightbench/wrightbench/blob/main/SECURITY.md).
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+      placeholder: |
+        1. Import project …
+        2. Click …
+        3. Expected … but saw …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Wrightbench version
+      description: From the welcome screen footer or the About dialog.
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 15.3 (Apple Silicon) / Windows 11 / Ubuntu 24.04
+    validations:
+      required: true
+  - type: input
+    id: playwright
+    attributes:
+      label: Playwright version of the imported project
+      placeholder: 1.62.1
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Anything from the DevTools console, terminal output, or a screenshot.
