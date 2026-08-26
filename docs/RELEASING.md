@@ -179,7 +179,7 @@ exactly one in the `release` environment. Azure mode wins if both exist.
 | Variable | `AZURE_SIGNING_ENDPOINT` | Regional Trusted Signing endpoint, e.g. `https://eus.codesigning.azure.net` |
 | Variable | `AZURE_CODE_SIGNING_ACCOUNT` | Trusted Signing account name |
 | Variable | `AZURE_CERTIFICATE_PROFILE` | Certificate profile name |
-| Variable | `EXPECTED_WIN_PUBLISHER` (optional) | Validated identity CN; the verifier enforces it when set |
+| Variable | `EXPECTED_WIN_PUBLISHER` | Validated identity CN (e.g. `Shirish Munukuntla`). Required in Azure mode: it is passed as electron-builder's schema-required `publisherName` and enforced by the installer verifier. Prefer the bare CN text over a full DN — the verifier does an exact-substring match against the certificate subject. |
 
 *Classic PFX certificate:*
 
