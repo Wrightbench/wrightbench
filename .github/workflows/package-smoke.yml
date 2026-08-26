@@ -1,0 +1,108 @@
+# Packaging smoke test: proves electron-builder packaging works on every
+# supported OS without publishing anything. Artifacts are UNSIGNED, built
+# without any secrets, uploaded only as short-retention workflow artifacts,
+# and must never be redistributed as releases. Runs on main and manually
+# (not on fork PRs) to keep PR CI fast and secret-free.
+name: Package smoke
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: package-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  package:
+    name: unsigned package (${{ matrix.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macos-arm64
+            os: macos-15
+            platform-flag: --mac
+            arch-flag: --arm64
+          - name: windows-x64
+            os: windows-2025
+            platform-flag: --win
+            arch-flag: --x64
+          - name: linux-x64
+            os: ubuntu-24.04
+            platform-flag: --linux
+            arch-flag: --x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    env:
+      # Never look for signing identities: smoke artifacts stay unsigned.
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application bundles
+        run: npm run build
+
+      - name: Package (unsigned)
+        env:
+          PLATFORM_FLAG: ${{ matrix.platform-flag }}
+          ARCH_FLAG: ${{ matrix.arch-flag }}
+        run: npx electron-builder "$PLATFORM_FLAG" "$ARCH_FLAG" --publish never
+
+      - name: Verify expected artifacts were produced
+        env:
+          MATRIX_NAME: ${{ matrix.name }}
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          ls -la release/
+          case "$MATRIX_NAME" in
+            macos-arm64)
+              test -f "release/Wrightbench-$VERSION-mac-arm64.dmg"
+              test -f "release/Wrightbench-$VERSION-mac-arm64.zip"
+              ;;
+            windows-x64)
+              test -f "release/Wrightbench-Setup-$VERSION-win-x64.exe"
+              ;;
+            linux-x64)
+              bash scripts/verify-linux-artifacts.sh "$VERSION"
+              ;;
+            *)
+              echo "unknown matrix entry $MATRIX_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Upload smoke artifacts (unsigned, 7-day retention)
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: unsigned-smoke-${{ matrix.name }}
+          path: |
+            release/Wrightbench-*-mac-*.dmg
+            release/Wrightbench-*-mac-*.zip
+            release/Wrightbench-Setup-*-win-*.exe
+            release/Wrightbench-*-linux-*.AppImage
+            release/wrightbench_*_amd64.deb
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0

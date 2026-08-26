@@ -6,7 +6,22 @@
   "main": "out/main/index.js",
   "type": "module",
   "private": true,
-  "author": "Wrightbench",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Wrightbench contributors",
+    "email": "wrightbench@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wrightbench/wrightbench.git"
+  },
+  "homepage": "https://github.com/Wrightbench/wrightbench#readme",
+  "bugs": {
+    "url": "https://github.com/Wrightbench/wrightbench/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
@@ -43,6 +58,9 @@
   "build": {
     "appId": "com.wrightbench.app",
     "productName": "Wrightbench",
+    "copyright": "Copyright 2026 Wrightbench contributors",
+    "asar": true,
+    "publish": null,
     "directories": {
       "buildResources": "resources",
       "output": "release"
@@ -50,25 +68,83 @@
     "files": [
       "out/**"
     ],
+    "extraResources": [
+      {
+        "from": "resources/icon.png",
+        "to": "icon.png"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE"
+      },
+      {
+        "from": "NOTICE",
+        "to": "NOTICE"
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      }
+    ],
     "mac": {
       "category": "public.app-category.developer-tools",
       "icon": "resources/icon.png",
       "target": [
         "dmg",
         "zip"
-      ]
+      ],
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "resources/entitlements.mac.plist",
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "notarize": true
+    },
+    "dmg": {
+      "sign": true,
+      "writeUpdateInfo": false
     },
     "win": {
-      "icon": "resources/icon.png"
+      "icon": "resources/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}-win-${arch}.${ext}"
+    },
+    "nsis": {
+      "differentialPackage": false
     },
     "linux": {
-      "icon": "resources/icon.png"
+      "icon": "resources/icon.png",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Development",
+      "synopsis": "Desktop studio for Playwright test suites",
+      "maintainer": "Wrightbench contributors <wrightbench@users.noreply.github.com>",
+      "vendor": "Wrightbench contributors"
     },
-    "extraResources": [
-      {
-        "from": "resources/icon.png",
-        "to": "icon.png"
-      }
-    ]
+    "appImage": {
+      "artifactName": "${productName}-${version}-linux-x86_64.${ext}"
+    },
+    "deb": {
+      "artifactName": "${name}_${version}_amd64.${ext}"
+    }
   }
 }

@@ -9,3 +9,12 @@ dist/
 
 # test bundles
 tests/.build/
+
+# signing material — must never be committed
+*.p8
+*.p12
+*.pfx
+*.cer
+*.pem
+*.keychain
+*.mobileprovision
