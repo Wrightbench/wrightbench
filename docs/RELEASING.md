@@ -165,16 +165,36 @@ release jobs — never PR workflows — can read them.
 | `APPLE_API_KEY_BASE64` | Base64 of the App Store Connect API key (`.p8`) used for notarization |
 | `APPLE_API_KEY_ID` | Key ID of that API key (e.g. `2X9R4HXF34`) |
 | `APPLE_API_ISSUER` | Issuer ID (UUID) from App Store Connect |
-| `WIN_CSC_LINK` | Base64 of the Windows Authenticode code-signing certificate (`.pfx`/`.p12`) |
-| `WIN_CSC_KEY_PASSWORD` | Password for that certificate |
+
+Windows signing supports **two mutually exclusive modes** (§11); configure
+exactly one in the `release` environment. Azure mode wins if both exist.
+
+*Azure Trusted Signing (recommended):*
+
+| Kind | Name | Contents |
+| --- | --- | --- |
+| Secret | `AZURE_TENANT_ID` | Entra ID Directory (tenant) ID of the service principal |
+| Secret | `AZURE_CLIENT_ID` | Application (client) ID of the service principal |
+| Secret | `AZURE_CLIENT_SECRET` | Client secret of the service principal |
+| Variable | `AZURE_SIGNING_ENDPOINT` | Regional Trusted Signing endpoint, e.g. `https://eus.codesigning.azure.net` |
+| Variable | `AZURE_CODE_SIGNING_ACCOUNT` | Trusted Signing account name |
+| Variable | `AZURE_CERTIFICATE_PROFILE` | Certificate profile name |
+| Variable | `EXPECTED_WIN_PUBLISHER` (optional) | Validated identity CN; the verifier enforces it when set |
+
+*Classic PFX certificate:*
+
+| Kind | Name | Contents |
+| --- | --- | --- |
+| Secret | `WIN_CSC_LINK` | Base64 of the Authenticode certificate (`.pfx`/`.p12`) |
+| Secret | `WIN_CSC_KEY_PASSWORD` | Password for that certificate |
 
 The workflows map `MAC_CSC_LINK`/`MAC_CSC_KEY_PASSWORD` to
 electron-builder's `CSC_LINK`/`CSC_KEY_PASSWORD` in the macOS job only;
-`WIN_CSC_LINK`/`WIN_CSC_KEY_PASSWORD` are read natively by
-electron-builder in the Windows job only. The notarization key is decoded
-into `RUNNER_TEMP`, referenced via `APPLE_API_KEY`
-(+ `APPLE_API_KEY_ID`, `APPLE_API_ISSUER`), and deleted in an
-always-running cleanup step. Key contents are never printed.
+the Windows values are read only in the Windows job, which fails closed
+when neither mode (or only part of one mode) is configured. The
+notarization key is decoded into `RUNNER_TEMP`, referenced via
+`APPLE_API_KEY` (+ `APPLE_API_KEY_ID`, `APPLE_API_ISSUER`), and deleted
+in an always-running cleanup step. Key contents are never printed.
 
 ## 10. Apple certificate and notarization setup
 
@@ -193,22 +213,61 @@ always-running cleanup step. Key contents are never printed.
 5. Delete local copies of the `.p12`/`.p8` when done, or store them in a
    password manager — never in the repository.
 
-## 11. Windows certificate setup
+## 11. Windows signing setup
+
+The Windows release job supports two mutually exclusive modes and
+**fails closed** until exactly one is fully configured — no production
+tag can ever publish an unsigned installer.
+
+### Option A (recommended): Azure Trusted Signing
+
+Produces standard timestamped Authenticode signatures from a
+Microsoft-managed HSM; certificates are short-lived and rotated by the
+service, which is fine because signatures are RFC3161-timestamped
+(Microsoft's `timestamp.acs.microsoft.com` by default).
+
+1. Azure portal → create a **Trusted Signing account** (Basic SKU is
+   enough). Note the account name and your region's endpoint URL
+   (e.g. East US → `https://eus.codesigning.azure.net`).
+2. In the account, complete **Identity validation** (type: Public
+   Trust). This legal-identity check is the long pole — start it early
+   and check the portal for current eligibility requirements.
+3. Create a **certificate profile** (type: Public Trust) bound to the
+   validated identity; note the profile name. The validated identity's
+   name becomes the certificate subject CN — put it in the optional
+   `EXPECTED_WIN_PUBLISHER` variable so the verifier enforces it.
+4. Microsoft Entra ID → **App registrations** → new registration (e.g.
+   `wrightbench-release-signer`) → create a **client secret** (record
+   the value immediately; it is shown once). Note the Directory (tenant)
+   ID and Application (client) ID.
+5. On the Trusted Signing account → **Access control (IAM)** → assign
+   the app registration the role **Trusted Signing Certificate Profile
+   Signer**.
+6. Fill the `release` environment per the §9 table: three `AZURE_*`
+   secrets, three `AZURE_*` variables.
+
+The workflow injects `win.azureSignOptions` only in the release job (so
+smoke builds stay unsigned) and electron-builder installs the
+`TrustedSigning` PowerShell module on the runner during the build.
+
+### Option B: classic PFX certificate
 
 Buy an Authenticode code-signing certificate (OV or EV) from a CA. If it
 is file-exportable (`.pfx`): `base64 -i cert.pfx` → `WIN_CSC_LINK`, its
 password → `WIN_CSC_KEY_PASSWORD`.
 
-> **Note:** CA/Browser Forum rules increasingly require keys in hardware
-> (HSM) — many newer certificates cannot be exported as `.pfx`. Cloud
-> signing services (Azure Trusted Signing, SSL.com eSigner, DigiCert
-> KeyLocker) need a different electron-builder configuration
-> (`win.azureSignOptions` / a custom `sign` hook) — adapt the Windows job
-> when adopting one. **Until Windows secrets are configured, the Windows
-> release job fails closed by design**: the pipeline structure is in
-> place, but no production tag can publish an unsigned installer.
+> **Note:** CA/Browser Forum rules increasingly require private keys in
+> hardware (HSM), so many newer certificates cannot be exported as
+> `.pfx` at all — which is why Option A is the recommended path.
 
 ## 12. Certificate rotation
+
+With Azure Trusted Signing there is no certificate to rotate — the
+service rotates its short-lived certificates itself. What does expire is
+the service principal's **client secret**: create a new one in the app
+registration before the old one lapses and update `AZURE_CLIENT_SECRET`.
+
+For the Apple certificate and the PFX mode:
 
 1. Obtain/renew the certificate and re-export it.
 2. Update the environment secrets in place (same names).
