@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <!--
+    Minimum entitlements for a hardened-runtime Electron app.
+    allow-jit is required by V8; nothing else is needed on Electron 43:
+    the better-sqlite3 native module is signed with the same Developer ID
+    during packaging (so no library-validation exemption), and spawning
+    external Playwright/Node processes is not restricted by the hardened
+    runtime. Used for the app and inherited by the Electron helpers.
+  -->
+  <dict>
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+  </dict>
+</plist>
