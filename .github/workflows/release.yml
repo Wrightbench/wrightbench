@@ -298,10 +298,12 @@ jobs:
         #   azure — Azure Trusted Signing: secrets AZURE_TENANT_ID /
         #           AZURE_CLIENT_ID / AZURE_CLIENT_SECRET plus environment
         #           variables AZURE_SIGNING_ENDPOINT /
-        #           AZURE_CODE_SIGNING_ACCOUNT / AZURE_CERTIFICATE_PROFILE
+        #           AZURE_CODE_SIGNING_ACCOUNT / AZURE_CERTIFICATE_PROFILE /
+        #           EXPECTED_WIN_PUBLISHER (doubles as the required
+        #           azureSignOptions.publisherName)
         #   pfx   — classic certificate file: WIN_CSC_LINK + WIN_CSC_KEY_PASSWORD
-        # Azure wins when any of its six values is set; a partial
-        # configuration of either mode is an error, never an unsigned build.
+        # Azure wins when any of its values is set; a partial configuration
+        # of either mode is an error, never an unsigned build.
         env:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -309,10 +311,11 @@ jobs:
           AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
           AZURE_CODE_SIGNING_ACCOUNT: ${{ vars.AZURE_CODE_SIGNING_ACCOUNT }}
           AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_CERTIFICATE_PROFILE }}
+          EXPECTED_WIN_PUBLISHER: ${{ vars.EXPECTED_WIN_PUBLISHER }}
           WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
-          azure_names="AZURE_TENANT_ID AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_SIGNING_ENDPOINT AZURE_CODE_SIGNING_ACCOUNT AZURE_CERTIFICATE_PROFILE"
+          azure_names="AZURE_TENANT_ID AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_SIGNING_ENDPOINT AZURE_CODE_SIGNING_ACCOUNT AZURE_CERTIFICATE_PROFILE EXPECTED_WIN_PUBLISHER"
           azure_present=""
           azure_missing=""
           for name in $azure_names; do
@@ -325,7 +328,7 @@ jobs:
 
           if [ -n "$azure_present" ]; then
             if [ -n "$azure_missing" ]; then
-              echo "::error::Azure Trusted Signing is partially configured. Present:$azure_present. Missing:$azure_missing. Configure the complete set in the 'release' environment (secrets: AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET; variables: AZURE_SIGNING_ENDPOINT, AZURE_CODE_SIGNING_ACCOUNT, AZURE_CERTIFICATE_PROFILE). Refusing to build unsigned."
+              echo "::error::Azure Trusted Signing is partially configured. Present:$azure_present. Missing:$azure_missing. Configure the complete set in the 'release' environment (secrets: AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET; variables: AZURE_SIGNING_ENDPOINT, AZURE_CODE_SIGNING_ACCOUNT, AZURE_CERTIFICATE_PROFILE, EXPECTED_WIN_PUBLISHER). Refusing to build unsigned."
               exit 1
             fi
             echo "Windows signing mode: Azure Trusted Signing"
@@ -369,12 +372,17 @@ jobs:
           AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
           AZURE_CODE_SIGNING_ACCOUNT: ${{ vars.AZURE_CODE_SIGNING_ACCOUNT }}
           AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_CERTIFICATE_PROFILE }}
+          EXPECTED_WIN_PUBLISHER: ${{ vars.EXPECTED_WIN_PUBLISHER }}
         run: |
+          # publisherName is schema-required by this electron-builder version
+          # (it is not sent to the signing service; it must simply match the
+          # certificate's publisher, which the verify step enforces anyway).
           npx electron-builder --win --x64 --publish never \
             -c.forceCodeSigning=true \
             -c.win.azureSignOptions.endpoint="$AZURE_SIGNING_ENDPOINT" \
             -c.win.azureSignOptions.codeSigningAccountName="$AZURE_CODE_SIGNING_ACCOUNT" \
-            -c.win.azureSignOptions.certificateProfileName="$AZURE_CERTIFICATE_PROFILE"
+            -c.win.azureSignOptions.certificateProfileName="$AZURE_CERTIFICATE_PROFILE" \
+            -c.win.azureSignOptions.publisherName="$EXPECTED_WIN_PUBLISHER"
 
       - name: Package and sign the installer (PFX)
         if: steps.winmode.outputs.mode == 'pfx'
