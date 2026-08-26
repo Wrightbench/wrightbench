@@ -1,0 +1,188 @@
+/* Screen 11 — Reports. Values from the artboard, verbatim. */
+
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px;
+  border-bottom: 1px solid var(--bd);
+}
+
+/* run-selector pill (single entry — Playwright keeps one report) */
+.runPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  font-size: 12.5px;
+  background: var(--card);
+  box-sizing: content-box;
+}
+
+.runNumber {
+  font: 400 11.5px var(--font-mono);
+}
+
+.runWhen {
+  color: var(--t2);
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbarActions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- webview frame ---- */
+
+.webviewArea {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 16px;
+  display: flex;
+}
+
+.frame {
+  flex: 1;
+  background: var(--wv-frame);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chrome {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--wv-bd);
+}
+
+.chromeSkeletons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chromeTitle {
+  width: 120px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--wv-skel-active);
+}
+
+.chromeChip {
+  width: 52px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--wv-skel-btn);
+}
+
+.chromeLabel {
+  font: 400 10.5px var(--font-mono);
+  color: var(--wv-t);
+}
+
+.webview {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---- placeholder interior ---- */
+
+.mockBody {
+  flex: 1;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  position: relative;
+}
+
+.mockSummary {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mockStat {
+  width: 150px;
+  height: 52px;
+  border-radius: 8px;
+  background: var(--wv-card);
+  border: 1px solid var(--wv-bd);
+}
+
+.mockSpacer {
+  flex: 1;
+}
+
+.mockSearch {
+  width: 180px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--wv-card);
+  border: 1px solid var(--wv-bd);
+  align-self: center;
+}
+
+.mockRow {
+  height: 34px;
+  border-radius: 7px;
+  background: var(--wv-card);
+  border: 1px solid var(--wv-bd);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  flex: none;
+}
+
+.mockStatus {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.mockName {
+  height: 9px;
+  border-radius: 5px;
+  background: var(--wv-skel-label);
+}
+
+.mockDuration {
+  margin-left: auto;
+  width: 44px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--wv-skel-label);
+}
+
+.emptyNote {
+  position: absolute;
+  inset: auto 22px 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--wv-t);
+}

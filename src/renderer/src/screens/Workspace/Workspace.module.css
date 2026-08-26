@@ -1,0 +1,215 @@
+.row {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.mainCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* tab content + the persistent UI Mode layer stack in one cell */
+.contentStack {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* The execution switcher floats above this reserved safe area so it never
+   covers a test row, evidence control, or Playwright's own bottom panels. */
+.contentStackWithDock {
+  padding-bottom: 62px;
+}
+
+.contentRow {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.focusedSurface {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.focusedSurfaceHidden {
+  composes: focusedSurface;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.focusedEmpty {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.focusedEmptyBody {
+  flex: 1;
+  min-height: 0;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.focusedEmptyIcon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 11px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  color: var(--ac-icon);
+  display: grid;
+  place-items: center;
+}
+
+.focusedEmptyBody h2 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.focusedEmptyBody p {
+  max-width: 430px;
+  color: var(--t3);
+  font-size: 12px;
+}
+
+/*
+ * The UI Mode webview must survive tab switches without unmounting (a
+ * remount reloads Playwright's UI and loses its selection/filter state), so
+ * it overlays the stack and hides via visibility — never display:none,
+ * which historically tears down <webview> guests.
+ */
+.uiModeHost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  background: var(--bg);
+}
+
+.contentStackWithDock .uiModeHost,
+.contentStackWithDock .uiModeHostHidden {
+  bottom: 62px;
+}
+
+.uiModeHostHidden {
+  composes: uiModeHost;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.historyHost {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.historyHostHidden {
+  composes: historyHost;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.recordHost {
+  composes: historyHost;
+  z-index: 3;
+}
+
+.recordHostHidden {
+  composes: recordHost;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.settingsHost {
+  composes: historyHost;
+  z-index: 5;
+}
+
+.placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t3);
+  font-size: 12.5px;
+}
+
+.contextTrace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contextHeader {
+  flex: none;
+  min-height: 42px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--t3);
+  font-size: 11px;
+}
+
+.contextHeader button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px 5px 4px;
+  border-radius: 7px;
+  color: var(--t2);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.contextHeader button:hover {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+/* "Recording · 0:42" pill in the tab strip (09) */
+.recordingPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--fail-tint-bg);
+  color: var(--fail-tint-t);
+  font-size: 11.5px;
+  font-weight: 500;
+  margin-bottom: 9px;
+  align-self: flex-end;
+}
+
+.recordingDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fail);
+}

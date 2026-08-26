@@ -1,0 +1,9 @@
+.root {
+  flex: none;
+  display: flex;
+  -webkit-app-region: no-drag;
+}
+
+.button {
+  font-size: 12px;
+}

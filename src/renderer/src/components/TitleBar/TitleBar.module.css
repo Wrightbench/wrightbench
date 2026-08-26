@@ -1,0 +1,150 @@
+.bar {
+  position: relative;
+  z-index: 50;
+  height: var(--app-titlebar-height);
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--bd);
+  background: var(--bg);
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.borderless {
+  border-bottom-color: transparent;
+}
+
+.left {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  /* Title-bar controls own their overflow surfaces (for example the project
+   * menu). Keep this cell visible so those surfaces are not clipped to the
+   * trigger height; the trigger text handles its own truncation. */
+  overflow: visible;
+}
+
+.lights {
+  flex: none;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.close {
+  background: #ec6a5e;
+}
+
+.minimize {
+  background: #f4bf4f;
+}
+
+.zoom {
+  background: #61c554;
+}
+
+/* space the real macOS traffic lights occupy (3×12px + 2×8px gaps) */
+.lightsSpacer {
+  flex: none;
+  width: 52px;
+  height: 12px;
+}
+
+.title {
+  font: 500 12.5px var(--font-ui);
+  color: var(--brand-heading);
+}
+
+.primaryNav {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--bd);
+  border-radius: 9px;
+  background: var(--panel);
+  -webkit-app-region: no-drag;
+}
+
+.primaryNavButton {
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.primaryNavButton:hover:not(.primaryNavButtonActive) {
+  color: var(--t1);
+  background: var(--active-row);
+}
+
+.primaryNavButtonActive {
+  border-color: var(--ac-icon);
+  background: var(--card);
+  color: var(--t1);
+  box-shadow: var(--card-shadow);
+}
+
+.right {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.settingsButton {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  color: var(--t2);
+  -webkit-app-region: no-drag;
+}
+
+.settingsButton:hover,
+.settingsButtonActive {
+  background: var(--active-row);
+  color: var(--t1);
+}
+
+.settingsButtonActive {
+  border-color: var(--ac-icon);
+}
+
+.sidebarToggle {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--t2);
+  -webkit-app-region: no-drag;
+}
+
+.sidebarToggle:hover {
+  background: var(--panel);
+  color: var(--t1);
+}

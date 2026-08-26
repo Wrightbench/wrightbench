@@ -1,0 +1,237 @@
+.root {
+  position: relative;
+  padding: 0 8px;
+}
+
+.rootTitlebar {
+  flex: 0 1 220px;
+  min-width: 0;
+  width: clamp(150px, 16vw, 220px);
+  padding: 0;
+  -webkit-app-region: no-drag;
+}
+
+/* the old active project row (card bg + border, 8px radius), now expandable */
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  color: var(--t1);
+  font-weight: 500;
+  text-align: left;
+}
+
+.triggerName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.triggerTitlebar {
+  height: 28px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12px;
+}
+
+.triggerTitlebar:hover,
+.triggerTitlebar[aria-expanded='true'] {
+  background: var(--active-row);
+}
+
+.count {
+  flex: none;
+  font: 400 11px var(--font-mono);
+  color: var(--t3);
+}
+
+/* Missing / Unavailable in place of the count — warning (flaky) token */
+.healthLabel {
+  flex: none;
+  font: 400 11px var(--font-mono);
+  color: var(--flaky-count);
+}
+
+/* overlays the tree below; stays inside the 262px sidebar (8px gutters) */
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 8px;
+  right: 8px;
+  z-index: 20;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menuTitlebar {
+  /* The 28px trigger is vertically centered in the 54px title bar. Clear the
+   * remaining 13px below it plus a 6px menu gap so the first project row never
+   * opens beneath the native macOS window controls. */
+  top: calc(100% + 19px);
+  left: 0;
+  right: auto;
+  width: 286px;
+  z-index: 80;
+}
+
+/* long workspaces scroll here instead of the menu escaping the window */
+.menuList {
+  max-height: 264px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* project row = select button + actions button as SIBLINGS (no nesting) */
+.itemRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 7px;
+}
+
+/* The select and action buttons are separate accessible controls, but one
+ * visual row. Entering either sibling highlights the complete project entry. */
+.itemRow:hover,
+.itemRow:focus-within {
+  background: var(--panel);
+}
+
+.itemRow:has(.itemActive) {
+  background: var(--active-row);
+}
+
+.itemRow .item {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemRow:has(.item:focus-visible),
+.itemRow:has(.itemAction:focus-visible) {
+  outline: 2px solid var(--ac);
+  outline-offset: 1px;
+}
+
+.itemRow .item:focus-visible,
+.itemRow .itemAction:focus-visible {
+  outline: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: var(--t2);
+  font-size: 12.5px;
+  text-align: left;
+}
+
+/* hover/focus-revealed per-project actions */
+.itemAction {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--t3);
+  opacity: 0;
+}
+
+.itemRow:hover .itemAction,
+.itemRow:focus-within .itemAction,
+.itemAction:focus-visible,
+.itemAction:focus {
+  opacity: 1;
+}
+
+.itemRow:hover .itemAction,
+.itemRow:focus-within .itemAction {
+  color: var(--t1);
+}
+
+.itemAction:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.itemAction:disabled {
+  cursor: default;
+  opacity: 0;
+}
+
+.itemRow:hover .itemAction:disabled {
+  opacity: 0.35;
+}
+
+.menu > .item:hover:not(:disabled) {
+  background: var(--panel);
+}
+
+/* run-lifecycle disabled treatment: 55%, stays visible */
+.item:disabled {
+  color: var(--t3);
+  opacity: 0.55;
+  cursor: default;
+}
+
+.itemActive {
+  background: transparent;
+  color: var(--t1);
+  font-weight: 500;
+}
+
+.itemName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.separator {
+  flex: none;
+  height: 1px;
+  background: var(--bd);
+  margin: 4px 2px;
+}
+
+.busyState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 6px 8px 5px;
+}
+
+.busyNote {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--t3);
+}
+
+.busyAction {
+  flex: none;
+  box-sizing: border-box;
+  justify-content: center;
+  width: 100%;
+}

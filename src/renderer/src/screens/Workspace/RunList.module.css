@@ -1,0 +1,119 @@
+.list {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* cards hug their one-line content; the cap is a safety net that ellipsizes
+   the timestamp rather than letting an outlier stretch the rail */
+.list > [role='listitem'] {
+  flex: none;
+  max-width: 300px;
+  display: flex;
+}
+
+.row {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.row:hover {
+  background: var(--panel);
+}
+
+.rowSelected {
+  border-color: var(--ac-icon);
+  background: var(--active-row);
+}
+
+/* one ring around the whole row when the primary body is keyboard-focused */
+.rowMain:focus-visible {
+  outline: none;
+}
+
+.row:has(.rowMain:focus-visible) {
+  outline: 2px solid var(--ac);
+  outline-offset: 1px;
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px 9px;
+  text-align: left;
+  border-radius: 10px;
+}
+
+.rowMark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+}
+
+.rowBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* one reading line: `Run #142  Today at 02:20 PM · 231.0s` */
+.rowTop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rowName {
+  flex: none;
+  font: 500 11.5px/18px var(--font-mono);
+  color: var(--t1);
+}
+
+.rowWhen {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.rowTime {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--t3);
+  font-size: 11px;
+}
+
+.rowDuration {
+  flex: none;
+  color: var(--t2);
+  font: 400 10.5px var(--font-mono);
+}
+
+/* the live card's duration ticks — reserve its widest form (separator dot
+   plus "999.9s") so digit rollovers never shift the cards behind it */
+.rowLive .rowDuration {
+  min-width: 9ch;
+}
+
+.rowDuration::before {
+  content: '·';
+  margin: 0 6px;
+  color: var(--t3);
+}

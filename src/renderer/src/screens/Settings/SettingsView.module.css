@@ -1,0 +1,369 @@
+/* Screen 10 — Settings. The current single-page layout supersedes the artboard nav. */
+
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t3);
+  font-size: 12.5px;
+}
+
+.overlayHeader {
+  flex: none;
+  min-height: 42px;
+  padding: 6px 18px;
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--bg);
+}
+
+.overlayTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--t1);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.backButton {
+  height: 28px;
+  padding: 0 9px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  background: var(--active-row);
+  color: var(--t1);
+}
+
+.backButton:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* ---- content ---- */
+
+.content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 26px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.colLeft {
+  width: min(520px, 100%);
+  max-width: 520px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 1 1 480px;
+}
+
+.colRight {
+  width: min(520px, 100%);
+  max-width: 520px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 1 1 480px;
+}
+
+@media (max-width: 1100px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .colLeft,
+  .colRight {
+    width: 100%;
+    max-width: 760px;
+    flex: none;
+  }
+}
+
+.sectionTitle {
+  font: 600 17px var(--font-serif);
+  margin-bottom: 3px;
+}
+
+.sectionSub {
+  font-size: 12.5px;
+  color: var(--t2);
+  margin-bottom: 12px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 6px 16px;
+}
+
+/* ---- node runtime ---- */
+
+.radioRow {
+  display: flex;
+  gap: 11px;
+  padding: 12px 0;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--t1);
+}
+
+button.radioRow {
+  align-items: flex-start;
+}
+
+.radioRowBordered {
+  border-bottom: 1px solid var(--bd);
+}
+
+.radioHit {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--t1);
+}
+
+button.radioRow:focus-visible,
+.radioHit:focus-visible,
+.textLink:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* selected = 16px ring drawn purely by a 5px accent border */
+.radioOn {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 5px solid var(--ac);
+  box-sizing: border-box;
+  margin-top: 2px;
+}
+
+.radioOff {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--t3);
+  box-sizing: border-box;
+  margin-top: 2px;
+}
+
+.radioRow:not(button) .radioOn,
+.radioRow:not(button) .radioOff {
+  margin-top: 0;
+}
+
+.radioBody {
+  display: block;
+  min-width: 0;
+}
+
+.radioLabel {
+  font-weight: 500;
+  display: block;
+}
+
+.radioLabelMuted {
+  color: var(--t2);
+}
+
+.radioDesc {
+  display: block;
+  font-size: 12px;
+  color: var(--t2);
+  margin-top: 1px;
+}
+
+.inlineMono {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.resolvedPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  padding: 4px 10px;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  font: 400 11px var(--font-mono);
+  color: var(--t2);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resolvedDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pass);
+  flex: none;
+}
+
+/* content-box like the reference: 280×30 inside padding + border */
+.pathInput {
+  box-sizing: content-box;
+  width: 280px;
+  height: 30px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 0 10px;
+  font: 400 11.5px var(--font-mono);
+  color: var(--t1);
+  outline: none;
+  flex: none;
+}
+
+.pathInput:disabled {
+  color: var(--t3);
+}
+
+.pathInput::placeholder {
+  color: var(--t3);
+  opacity: 1;
+}
+
+.pathInput:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: -1px;
+}
+
+/* ---- storage ---- */
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 0;
+  font-size: 13.5px;
+}
+
+.settingRowBordered {
+  border-bottom: 1px solid var(--bd);
+}
+
+.settingCaption {
+  display: block;
+  font-size: 11.5px;
+  color: var(--t3);
+}
+
+.storageBlock {
+  padding: 11px 0;
+}
+
+.storageHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+}
+
+.storageValue {
+  font: 500 12px var(--font-mono);
+  color: var(--t2);
+}
+
+/* content-box: 5px fill inside the 1px track border, like the reference */
+.meter {
+  box-sizing: content-box;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  background: var(--ac);
+}
+
+.storageCaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 9px;
+}
+
+.storageBreakdown {
+  font-size: 11.5px;
+  color: var(--t3);
+}
+
+.textLink {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ac);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.textLink:hover {
+  color: var(--ac-hover);
+}
+
+.textLinkDanger {
+  color: var(--fail);
+}
+
+.clearedNote {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--t3);
+}

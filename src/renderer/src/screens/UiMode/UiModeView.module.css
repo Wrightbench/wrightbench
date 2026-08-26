@@ -1,0 +1,243 @@
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.sessionMenu {
+  position: relative;
+  flex: none;
+  -webkit-app-region: no-drag;
+}
+
+.sessionTrigger {
+  max-width: 176px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sessionTrigger:hover,
+.sessionTrigger[aria-expanded='true'] {
+  background: var(--active-row);
+  color: var(--t1);
+}
+
+.sessionLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sessionPopover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 90;
+  width: 192px;
+  padding: 3px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--card-shadow);
+}
+
+.sessionMenuItem {
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.sessionMenuItem:hover:not(:disabled),
+.sessionMenuItem:focus-visible:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.sessionMenuItem:disabled {
+  cursor: default;
+  opacity: 0.52;
+}
+
+.sessionMenuItemBody {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sessionMenuHint {
+  color: var(--t3);
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.sessionMenuDanger {
+  color: var(--fail);
+}
+
+.sessionMenuDanger:hover:not(:disabled),
+.sessionMenuDanger:focus-visible:not(:disabled) {
+  background: var(--fail-tint-bg);
+  color: var(--fail);
+}
+
+.contextNote {
+  flex: none;
+  min-height: 30px;
+  padding: 6px 22px;
+  border-bottom: 1px solid var(--bd);
+  background: var(--flaky-chip-bg);
+  color: var(--flaky-chip-t);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+}
+
+.sessionError {
+  flex: none;
+  min-height: 30px;
+  padding: 6px 22px;
+  border-bottom: 1px solid var(--bd);
+  background: var(--fail-tint-bg);
+  color: var(--fail-tint-t);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+}
+
+.surface {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.webview {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  border: none;
+}
+
+.emptyState {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--bg);
+}
+
+.launchState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 420px;
+  text-align: center;
+  transform: translateY(-20px);
+}
+
+.launchMark {
+  display: inline-flex;
+  color: var(--ac-icon);
+  transition: transform 160ms ease;
+}
+
+.launchTitle {
+  margin: 20px 0 0;
+  color: var(--t1);
+  font: 600 22px/1.25 var(--font-serif);
+  text-wrap: balance;
+}
+
+.launchDescription {
+  max-width: 360px;
+  margin: 8px 0 0;
+  color: var(--t2);
+  font: 400 13px/1.55 var(--font-ui);
+  text-wrap: pretty;
+}
+
+.launchAction {
+  margin-top: 24px;
+  transition: transform 140ms ease;
+}
+
+.launchState:has(.launchAction:hover) .launchMark {
+  transform: translateY(-2px) scale(1.035);
+}
+
+.launchAction:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.launchAction:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 640px;
+  font: 400 11.5px var(--font-mono);
+  color: var(--t2);
+  text-align: center;
+}
+
+.note strong {
+  color: var(--t1);
+  font: 500 12px var(--font-ui);
+}
+
+.note span {
+  max-width: 580px;
+}
+
+.noteRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launchMark,
+  .launchAction {
+    transition: none;
+  }
+
+  .launchState:has(.launchAction:hover) .launchMark,
+  .launchAction:hover:not(:disabled) {
+    transform: none;
+  }
+}

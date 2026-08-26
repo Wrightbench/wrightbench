@@ -1,0 +1,61 @@
+/* hero fills the space between titlebar and footer; 40px bottom padding
+   biases the cluster optically above true center, per the reference */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 40px;
+}
+
+.brandLockup {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.wordmark {
+  color: var(--brand-wordmark);
+  font: 600 42px/1 var(--font-ui);
+  letter-spacing: -0.035em;
+}
+
+.tagline {
+  margin-top: 30px;
+  font: 600 30px/1.25 var(--font-serif);
+  color: var(--brand-heading);
+  text-align: center;
+  max-width: 600px;
+  text-wrap: pretty;
+}
+
+.prop {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--t2);
+  text-align: center;
+  max-width: 540px;
+  text-wrap: pretty;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.footer {
+  flex: none;
+  min-height: 34px;
+  padding: 0 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerVersion {
+  font: 400 11px var(--font-mono);
+  color: var(--t3);
+}

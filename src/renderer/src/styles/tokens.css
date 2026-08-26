@@ -1,0 +1,174 @@
+/*
+ * Wrightbench design tokens — single source: design_handoff_wrightbench/README.md.
+ * Tokens live on [data-theme] (not :root) so a subtree can be re-themed,
+ * which the kitchen sink uses to show both themes side by side.
+ */
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --panel: #f3f3f3;
+  --card: #ffffff;
+  --active-row: #e8e8e8;
+  --bd: #e1e4e8;
+  --t1: #24292f;
+  --t2: #57606a;
+  --t3: #606770;
+
+  --brand-primary: #2ead33;
+  --brand-secondary: #e2574c;
+  --brand-slate: #2d4552;
+  --brand-mark: #248a2b;
+  --brand-wordmark: #24313a;
+  --brand-heading: var(--brand-slate);
+
+  --ac: #2ead33;
+  --ac-hover: #3fb950;
+  /* Dark ink keeps Playwright green-filled controls above AA contrast. */
+  --ac-contrast: #1c1e21;
+  --ac-icon: #2ead33;
+
+  --pass: #2ead33;
+  --fail: #cf222e;
+  --flaky: #d97706;
+
+  --fail-tint-bg: #ffebe9;
+  --fail-tint-bd: #f3c4c8;
+  --fail-tint-t: #cf222e;
+  --fail-tint-body: #a40e26;
+
+  --pass-chip-bg: #dafbe1;
+  --pass-chip-t: #1a7f37;
+
+  --flaky-chip-bg: #fff8c5;
+  --flaky-chip-t: #9a6700;
+
+  /* Interactive selection stays neutral; green carries the active edge/icon. */
+  --ac-tint-bg: #e8e8e8;
+  --ac-tint-bd: #a7dfa9;
+  --ac-tint-t: #207a24;
+  --ac-tint-badge: #d9f2da;
+
+  --pass-count: #1a7f37;
+  --fail-count: #cf222e;
+  --flaky-count: #9a6700;
+
+  --timeline-action: #0969da;
+  --network-request: #8250df;
+  --locator-highlight: #0066cc;
+  --locator-overlay-fill: rgba(0, 102, 204, 0.12);
+
+  --card-shadow: 0 1px 4px rgba(36, 41, 47, 0.06);
+  --scrim: rgba(36, 41, 47, 0.32);
+
+  /* Hosted Playwright shells mirror the native light surface. */
+  --wv-frame: #f3f3f3;
+  --wv-bd: #e1e4e8;
+  --wv-card: #ffffff;
+  --wv-t: #57606a;
+  --wv-skel-label: #e8e8e8;
+  --wv-skel-line: #f5f6f7;
+  --wv-skel-bd: #ebedf0;
+  --wv-skel-btn: #e1e4e8;
+  --wv-skel-active: #e8e8e8;
+  --wv-skel-dim: #ebedf0;
+  --wv-pass: rgba(46, 173, 51, 0.24);
+  --wv-fail: rgba(207, 34, 46, 0.22);
+  --wv-flaky: rgba(217, 119, 6, 0.24);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #1e1e1e;
+  --panel: #252526;
+  --card: #242526;
+  --active-row: #37373d;
+  --bd: #3c3c3c;
+  --t1: #cccccc;
+  --t2: #a3a3a3;
+  --t3: #8b949e;
+
+  --brand-primary: #2ead33;
+  --brand-secondary: #e2574c;
+  --brand-slate: #2d4552;
+  --brand-mark: #55c85a;
+  --brand-wordmark: #f5f6f7;
+  --brand-heading: #f5f6f7;
+
+  --ac: #45ba4b;
+  --ac-hover: #2ead33;
+  --ac-contrast: #1c1e21;
+  --ac-icon: #45ba4b;
+
+  --pass: #3fb950;
+  --fail: #f85149;
+  --flaky: #e3b341;
+
+  --fail-tint-bg: #3a2426;
+  --fail-tint-bd: #6e3033;
+  --fail-tint-t: #f85149;
+  --fail-tint-body: #ff7b72;
+
+  --pass-chip-bg: #203a26;
+  --pass-chip-t: #3fb950;
+
+  --flaky-chip-bg: #3b321d;
+  --flaky-chip-t: #e3b341;
+
+  --ac-tint-bg: #37373d;
+  --ac-tint-bd: #45ba4b;
+  --ac-tint-t: #45ba4b;
+  --ac-tint-badge: #29492c;
+
+  --pass-count: #3fb950;
+  --fail-count: #f85149;
+  --flaky-count: #e3b341;
+
+  --timeline-action: #58a6ff;
+  --network-request: #bc8cff;
+  --locator-highlight: #0066cc;
+  --locator-overlay-fill: rgba(0, 102, 204, 0.12);
+
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  --scrim: rgba(0, 0, 0, 0.56);
+
+  /* Hosted Playwright shells mirror the native dark surface. */
+  --wv-frame: #252526;
+  --wv-bd: #3c3c3c;
+  --wv-card: #242526;
+  --wv-t: #8b949e;
+  --wv-skel-label: #37373d;
+  --wv-skel-line: #242526;
+  --wv-skel-bd: #3c3c3c;
+  --wv-skel-btn: #37373d;
+  --wv-skel-active: #3c3c3c;
+  --wv-skel-dim: #33363a;
+  --wv-pass: rgba(63, 185, 80, 0.32);
+  --wv-fail: rgba(248, 81, 73, 0.3);
+  --wv-flaky: rgba(227, 179, 65, 0.3);
+}
+
+/* pre-hydration paint: match the OS scheme until the store stamps data-theme */
+html:not([data-theme]) {
+  background: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    background: #1e1e1e;
+  }
+}
+
+:root {
+  /* Fixed application chrome used by full-window workspace overlays. */
+  --app-titlebar-height: 54px;
+  --app-statusbar-height: 30px;
+  /* Snapshot scrubber handle stays white in both themes. */
+  --scrub-handle: #ffffff;
+
+  --font-ui: 'Schibsted Grotesk', -apple-system, 'Helvetica Neue', sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+}

@@ -1,0 +1,237 @@
+.root {
+  position: relative;
+  flex: none;
+}
+
+.trigger {
+  height: 30px;
+  min-width: 116px;
+  padding: 0 9px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--t2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.trigger:hover,
+.triggerActive {
+  border-color: var(--ac-tint-bd);
+  color: var(--t1);
+}
+
+.triggerActive {
+  background: var(--ac-tint-bg);
+  color: var(--ac-tint-t);
+}
+
+.popover {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  right: 0;
+  width: 430px;
+  padding: 7px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--card-shadow);
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  gap: 8px;
+}
+
+.popoverStart {
+  right: auto;
+  left: 0;
+}
+
+.popoverCompact {
+  width: 310px;
+  grid-template-columns: 1fr;
+}
+
+.popoverCompact .presets {
+  border-right: 0;
+  border-bottom: 1px solid var(--bd);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.presets {
+  padding: 3px 7px 3px 3px;
+  border-right: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preset,
+.presetActive {
+  width: 100%;
+  min-height: 29px;
+  padding: 5px 7px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--t2);
+  font-size: 11.5px;
+  text-align: left;
+}
+
+.preset:hover {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.presetActive {
+  background: var(--active-row);
+  color: var(--t1);
+  font-weight: 600;
+}
+
+.calendar {
+  padding: 2px 3px 0;
+}
+
+.calendarHeader {
+  min-height: 30px;
+  margin-bottom: 4px;
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+}
+
+.calendarHeader strong {
+  color: var(--t1);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.calendarHeader button {
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t2);
+}
+
+.calendarHeader button:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.calendarHeader button:disabled {
+  opacity: 0.35;
+}
+
+.weekdays,
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdays span {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t3);
+  font: 500 9px var(--font-mono);
+}
+
+.day {
+  position: relative;
+  height: 29px;
+  border-radius: 7px;
+  color: var(--t2);
+  font: 400 10.5px var(--font-mono);
+}
+
+.day:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.dayOutside {
+  color: var(--t3);
+  opacity: 0.55;
+}
+
+.dayInRange {
+  border-radius: 0;
+  background: var(--ac-tint-bg);
+  color: var(--ac-tint-t);
+}
+
+.dayEndpoint {
+  background: var(--ac);
+  color: var(--ac-contrast);
+  font-weight: 600;
+}
+
+.dayToday:not(.dayEndpoint)::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--ac-icon);
+}
+
+.day:disabled {
+  opacity: 0.25;
+}
+
+.rangeSummary {
+  grid-column: 1 / -1;
+  min-height: 31px;
+  padding: 5px 8px;
+  border: 1px solid var(--bd);
+  border-radius: 7px;
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 7px;
+  color: var(--t3);
+  font: 400 10px var(--font-mono);
+}
+
+.rangeSummary span:last-child {
+  text-align: right;
+}
+
+.footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+@media (max-width: 900px) {
+  .popover {
+    width: 310px;
+    grid-template-columns: 1fr;
+  }
+
+  .presets {
+    border-right: 0;
+    border-bottom: 1px solid var(--bd);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

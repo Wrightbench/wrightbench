@@ -1,0 +1,52 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* kitchen-sink embedding: fill the positioned preview box instead */
+.embedded {
+  position: absolute;
+}
+
+.card {
+  width: 400px;
+  max-width: 100%;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  padding: 18px 20px 16px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.body {
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--t2);
+}
+
+.detail {
+  margin-top: 8px;
+  font: 400 11.5px var(--font-mono);
+  color: var(--t3);
+  word-break: break-all;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

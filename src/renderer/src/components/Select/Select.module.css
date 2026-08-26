@@ -1,0 +1,76 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.trigger {
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  color: var(--t1);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.h30 {
+  height: 30px;
+  font-size: 12.5px;
+}
+
+.h28 {
+  height: 28px;
+  font-size: 12px;
+}
+
+.card {
+  background: var(--card);
+}
+
+.panel {
+  background: var(--panel);
+}
+
+.mono.h30 {
+  font: 400 12px var(--font-mono);
+}
+
+.mono.h28 {
+  font: 400 11.5px var(--font-mono);
+}
+
+.muted {
+  color: var(--t2);
+}
+
+.dimmed {
+  opacity: 0.55;
+}
+
+/* the visible trigger carries the same accent focus treatment as other controls */
+.trigger:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 1px;
+}
+
+.value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu {
+  min-width: 180px;
+  max-width: min(320px, calc(100vw - 16px));
+  max-height: min(280px, calc(100vh - 16px));
+  overflow-y: auto;
+}
+
+.menuMono button {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}

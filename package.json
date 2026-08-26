@@ -1,0 +1,74 @@
+{
+  "name": "wrightbench",
+  "productName": "Wrightbench",
+  "version": "0.1.0",
+  "description": "A desktop studio for recording, running, debugging and reviewing Playwright test suites.",
+  "main": "out/main/index.js",
+  "type": "module",
+  "private": true,
+  "author": "Wrightbench",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test:uimode": "node tests/run-tests.mjs",
+    "test:uimode:live": "node tests/run-tests.mjs --live",
+    "package": "electron-vite build && electron-builder --dir",
+    "dist": "electron-vite build && electron-builder"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "chokidar": "^4.0.3",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/schibsted-grotesk": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.0",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.6"
+  },
+  "build": {
+    "appId": "com.wrightbench.app",
+    "productName": "Wrightbench",
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "files": [
+      "out/**"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "resources/icon.png",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "icon": "resources/icon.png"
+    },
+    "linux": {
+      "icon": "resources/icon.png"
+    },
+    "extraResources": [
+      {
+        "from": "resources/icon.png",
+        "to": "icon.png"
+      }
+    ]
+  }
+}

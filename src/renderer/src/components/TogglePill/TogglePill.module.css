@@ -1,0 +1,24 @@
+.pill {
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 13px;
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--t2);
+  background: transparent;
+}
+
+/*
+ * Active state is not drawn on any artboard; README calls for "accent-tinted".
+ * The neutral fill plus green edge matches Playwright's active-row language.
+ */
+.active {
+  background: var(--ac-tint-bg);
+  border-color: var(--ac-tint-bd);
+  color: var(--ac-tint-t);
+}

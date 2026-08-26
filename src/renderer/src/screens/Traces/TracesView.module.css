@@ -1,0 +1,348 @@
+/* Screen 12 — Traces. Values from the artboard, verbatim. */
+
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.row {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* ---- library (330px) ---- */
+
+.library {
+  width: 330px;
+  flex: none;
+  border-right: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.libToolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px 10px;
+}
+
+.filterField {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--t3);
+  font-size: 12px;
+  min-width: 0;
+  box-sizing: content-box;
+}
+
+.filterInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font-size: 12px;
+  color: var(--t1);
+  outline: none;
+}
+
+.filterInput::placeholder {
+  color: var(--t3);
+}
+
+.openBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 12px;
+  background: var(--card);
+  color: var(--t1);
+  box-sizing: content-box;
+}
+
+.openBtn:hover {
+  border-color: var(--ac-tint-bd);
+}
+
+.openBtn:focus-visible,
+.card:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: -1px;
+}
+
+.cardList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card {
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  text-align: left;
+  color: var(--t1);
+  flex: none;
+  display: block;
+}
+
+.card:disabled {
+  opacity: 0.55;
+}
+
+.cardSelected {
+  background: var(--ac-tint-bg);
+  border-color: var(--ac-tint-bd);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cardRun {
+  font: 500 11.5px var(--font-mono);
+}
+
+.cardName {
+  display: block;
+  font-size: 12.5px;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardNameSelected {
+  font-weight: 500;
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  gap: 8px;
+}
+
+.cardSpec {
+  font: 400 11px var(--font-mono);
+  color: var(--t3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardSize {
+  font: 400 10.5px var(--font-mono);
+  color: var(--t3);
+  flex: none;
+}
+
+.dropZone {
+  margin-top: 2px;
+  padding: 14px 12px;
+  border: 1.5px dashed var(--bd);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--t3);
+  font-size: 12px;
+  flex: none;
+}
+
+.emptyNote {
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--t3);
+}
+
+.libFooter {
+  flex: none;
+  padding: 10px 14px;
+  border-top: 1px solid var(--bd);
+  font-size: 11.5px;
+  color: var(--t3);
+}
+
+/* ---- viewer ---- */
+
+.viewerArea {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px 14px 14px;
+  display: flex;
+}
+
+.viewerSkeletons {
+  display: flex;
+  gap: 6px;
+}
+
+.viewerSkeletons span {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--wv-skel-btn);
+}
+
+.webview {
+  flex: 1;
+  min-height: 0;
+}
+
+/* placeholder interior follows the hosted Playwright surface theme */
+
+.mockStrip {
+  flex: none;
+  display: flex;
+  gap: 5px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--wv-bd);
+}
+
+.mockFrame {
+  flex: 1;
+  height: 38px;
+  border-radius: 5px;
+  background: var(--wv-skel-bd);
+}
+
+.mockFrameActive {
+  background: var(--wv-skel-btn);
+}
+
+.mockBody {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.mockActions {
+  width: 220px;
+  flex: none;
+  border-right: 1px solid var(--wv-bd);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.mockBar {
+  height: 9px;
+  border-radius: 5px;
+  background: var(--wv-skel-btn);
+}
+
+.mockBarActive {
+  background: var(--wv-skel-active);
+}
+
+.mockSnapshotPane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+}
+
+.mockSnapshotCard {
+  flex: 1;
+  border-radius: 8px;
+  background: var(--wv-card);
+  border: 1px solid var(--wv-bd);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  position: relative;
+  min-height: 0;
+}
+
+.mockSnapTitle {
+  width: 30%;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--wv-skel-label);
+}
+
+.mockSnapField {
+  width: 100%;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--wv-skel-line);
+  border: 1px solid var(--wv-skel-bd);
+  box-sizing: content-box;
+}
+
+.mockSnapRow {
+  display: flex;
+  gap: 10px;
+}
+
+.mockSnapRow .mockSnapBox {
+  flex: 1;
+  height: 60px;
+  border-radius: 8px;
+  background: var(--wv-skel-line);
+  border: 1px solid var(--wv-skel-bd);
+  box-sizing: content-box;
+}
+
+.mockSnapLine {
+  width: 50%;
+  height: 9px;
+  border-radius: 5px;
+  background: var(--wv-skel-label);
+}
+
+.mockNote {
+  position: absolute;
+  inset: auto 18px 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--wv-t);
+}
+
+.mockTabs {
+  flex: none;
+  display: flex;
+  gap: 14px;
+  border-top: 1px solid var(--wv-bd);
+  padding-top: 10px;
+}
+
+.mockTab {
+  width: 52px;
+  height: 9px;
+  border-radius: 5px;
+  background: var(--wv-skel-dim);
+}
+
+.mockTabActive {
+  background: var(--wv-skel-active);
+}

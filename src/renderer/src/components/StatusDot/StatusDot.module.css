@@ -1,0 +1,47 @@
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.pass {
+  background: var(--pass);
+}
+
+.fail {
+  background: var(--fail);
+}
+
+.flaky {
+  background: var(--flaky);
+}
+
+/* 7px outer including the 1.5px border — reference sets box-sizing explicitly */
+.queued {
+  box-sizing: border-box;
+  background: none;
+  border: 1.5px solid var(--t3);
+}
+
+@keyframes wbspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  flex: none;
+  animation: wbspin 1s linear infinite;
+}
+
+/* the resting ring under the accent arc — hairline color in both themes */
+.spinnerTrack {
+  stroke: var(--bd);
+}
+
+/* 270° of the r=6.5 circle (dash 3/4 of the 40.84 circumference); the
+   rotate(-90) on the element starts the arc at 12 o'clock */
+.spinnerArc {
+  stroke-dasharray: 30.63 40.84;
+}

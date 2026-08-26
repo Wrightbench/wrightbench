@@ -1,0 +1,85 @@
+.menu {
+  position: absolute;
+  z-index: 30;
+  min-width: 180px;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* right-click: fixed at the pointer, clamped to the viewport by the effect */
+.pointer {
+  position: fixed;
+}
+
+/* kitchen-sink preview: sits in normal flow */
+.embedded {
+  position: static;
+  width: 220px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: var(--t2);
+  font-size: 12.5px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.item:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.item:disabled {
+  color: var(--t3);
+  opacity: 0.55;
+  cursor: default;
+}
+
+.itemDanger:hover:not(:disabled) {
+  color: var(--fail);
+}
+
+.itemMark {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t1);
+}
+
+.itemLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.separator {
+  flex: none;
+  height: 1px;
+  background: var(--bd);
+  margin: 4px 2px;
+}
+
+.heading {
+  padding: 6px 8px 3px 29px;
+  color: var(--t3);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}

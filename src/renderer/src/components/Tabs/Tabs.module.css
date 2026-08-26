@@ -1,0 +1,40 @@
+.strip {
+  flex: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.tab {
+  padding: 12px 2px 9px;
+  color: var(--t2);
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* The underline follows the theme's Playwright interaction green. */
+.active {
+  color: var(--t1);
+  font-weight: 600;
+  border-bottom: 2px solid var(--ac-icon);
+  margin-bottom: -1px;
+}
+
+/* bottom-aligned like the tabs; callers add their own offset
+   (07 range select: padding 8px 0 · 09 recording pill: margin-bottom 9px) */
+.trailing {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* leading control (sidebar toggle) — tighter than the 26px tab gap */
+.leading {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  margin-right: -10px;
+}

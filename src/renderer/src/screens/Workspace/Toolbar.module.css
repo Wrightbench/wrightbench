@@ -1,0 +1,31 @@
+/* wraps only in the extreme case (max sidebar + minimum window) so a wide
+   sidebar can never force horizontal overflow */
+.toolbar {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  row-gap: 8px;
+  padding: 11px 22px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--bd);
+}
+
+.workersBusy {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--t2);
+}
+
+.workersSelect {
+  margin-left: auto;
+}

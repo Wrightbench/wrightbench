@@ -1,0 +1,928 @@
+.detail {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+/* ---- header: one exact run's identity, clearly separated from the body ---- */
+
+.header {
+  flex: none;
+  padding: 10px 14px 0;
+  border-bottom: 1px solid var(--bd);
+  background: var(--card);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.headerIdentity {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerIdentity strong {
+  font: 600 13px var(--font-mono);
+  color: var(--t1);
+}
+
+.status {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
+  padding: 2px 9px;
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--t2);
+}
+
+.status_pass {
+  color: var(--pass-count);
+  background: var(--pass-chip-bg);
+}
+
+.status_fail {
+  color: var(--fail-count);
+  border-color: var(--fail-tint-bd);
+  background: var(--fail-tint-bg);
+}
+
+.status_flaky {
+  color: var(--flaky-count);
+  background: var(--flaky-chip-bg);
+}
+
+.status_running {
+  color: var(--ac-icon);
+}
+
+.status_queued,
+.status_skipped,
+.status_none {
+  color: var(--t3);
+}
+
+.headerNav {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.headerNavButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: var(--t2);
+}
+
+.headerNavButton:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.headerNavButton:disabled {
+  color: var(--t3);
+  opacity: 0.55;
+  cursor: default;
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 6px;
+  color: var(--t3);
+  font-size: 11px;
+}
+
+.headerMeta > * + *::before {
+  content: '·';
+  margin-right: 7px;
+  color: var(--t3);
+}
+
+.headerMeta code {
+  font: 400 10.5px var(--font-mono);
+}
+
+/* ---- project / attempt selector ---- */
+
+.projectSelector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.projectPills,
+.attemptPills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.attemptPills {
+  padding-left: 8px;
+  border-left: 1px solid var(--bd);
+}
+
+.projectPill,
+.projectPillActive,
+.attemptPill,
+.attemptPillActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  padding: 2px 10px;
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  color: var(--t2);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.projectPill:hover,
+.attemptPill:hover {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.projectPillActive,
+.attemptPillActive {
+  border-color: var(--ac-tint-bd);
+  background: var(--ac-tint-bg);
+  color: var(--ac-tint-t);
+}
+
+/* ---- run-scoped evidence tabs (subordinate to the page-level Runs heading) ---- */
+
+.tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.tab,
+.tabActive {
+  position: relative;
+  padding: 8px 2px 7px;
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.tab:hover,
+.tabActive {
+  color: var(--t1);
+}
+
+.tabActive {
+  font-weight: 600;
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ac-icon);
+}
+
+/* ---- bodies ---- */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.hostBody {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  padding: 14px;
+}
+
+.webview {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+}
+
+.hostError {
+  flex: none;
+  min-height: 36px;
+  margin: 10px 14px 0;
+  padding: 7px 9px;
+  border: 1px solid var(--fail-tint-bd);
+  border-radius: 8px;
+  background: var(--fail-tint-bg);
+  color: var(--fail-tint-t);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+}
+
+.hostError span {
+  flex: 1;
+  min-width: 0;
+}
+
+.hostError button {
+  padding: 3px 6px;
+  border-radius: 6px;
+  color: inherit;
+  font-weight: 500;
+}
+
+.hostError button:hover {
+  background: var(--panel);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 80px;
+  color: var(--t3);
+  font-size: 12px;
+}
+
+.liveBanner {
+  min-height: 38px;
+  margin-bottom: 12px;
+  padding: 8px 11px;
+  border: 1px solid var(--ac-tint-bd);
+  border-radius: 8px;
+  background: var(--ac-tint-bg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ac-tint-t);
+  font-size: 11.5px;
+}
+
+.failureCard {
+  margin-bottom: 12px;
+  padding: 12px 12px 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--fail-tint-bd);
+  border-radius: 10px;
+  background: var(--fail-tint-bg);
+}
+
+.failureCard code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fail-tint-t);
+  font: 400 11.5px var(--font-mono);
+}
+
+.failureCard button {
+  flex: none;
+  gap: 7px;
+}
+
+/* ---- attempt cards (moved from the former Info tab) ---- */
+
+.attemptCard {
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.attemptCard + .attemptCard {
+  margin-top: 12px;
+}
+
+.attemptHeader {
+  min-height: 42px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.attemptHeader > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.attemptHeader strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.attemptHeader span,
+.attemptHeader code {
+  color: var(--t3);
+  font: 400 10.5px var(--font-mono);
+}
+
+.attemptError {
+  margin: 0;
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--fail-tint-bd);
+  background: var(--fail-tint-bg);
+  color: var(--fail-tint-t);
+  white-space: pre-wrap;
+  font: 400 11px/1.55 var(--font-mono);
+}
+
+.steps {
+  padding: 5px 0;
+}
+
+.stepRow {
+  min-height: 34px;
+  padding: 6px 12px;
+  display: grid;
+  grid-template-columns: 16px minmax(140px, 1fr) minmax(80px, auto) 70px;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+}
+
+.stepRow:hover {
+  background: var(--panel);
+}
+
+.stepState {
+  color: var(--pass-count);
+  font: 500 12px var(--font-mono);
+}
+
+.stepStateFail {
+  color: var(--fail);
+}
+
+.stepStatePending {
+  color: var(--t3);
+}
+
+.stepTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stepCategory,
+.stepRow code {
+  color: var(--t3);
+  font: 400 10.5px var(--font-mono);
+  text-align: right;
+}
+
+.logs {
+  border-top: 1px solid var(--bd);
+}
+
+.logs summary {
+  padding: 8px 12px;
+  color: var(--t2);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.logs pre {
+  max-height: 220px;
+  margin: 0;
+  padding: 10px 12px;
+  overflow: auto;
+  border-top: 1px solid var(--bd);
+  background: var(--panel);
+  color: var(--t2);
+  white-space: pre-wrap;
+  font: 400 10.5px/1.5 var(--font-mono);
+}
+
+/* ---- empty / note / artifact surfaces ---- */
+
+.tabEmpty {
+  min-height: 160px;
+  border: 1px dashed var(--bd);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 24px;
+  text-align: center;
+  color: var(--t3);
+  font-size: 11.5px;
+}
+
+.tabEmpty h3 {
+  color: var(--t1);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tabEmpty p {
+  max-width: 460px;
+}
+
+.tabEmpty button {
+  gap: 6px;
+}
+
+.tabNote {
+  margin-top: 10px;
+  color: var(--t3);
+  font-size: 10.5px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 8px;
+}
+
+.sectionHeading h3 {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.sectionHeading span {
+  color: var(--t3);
+  font: 400 11px var(--font-mono);
+}
+
+.artifactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 9px;
+}
+
+.artifactCard {
+  min-width: 0;
+  min-height: 58px;
+  padding: 10px 11px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.artifactCard:hover {
+  background: var(--panel);
+}
+
+.artifactCardActive {
+  border-color: var(--ac-icon);
+  background: var(--ac-tint-bg);
+}
+
+.artifactCard > span {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.artifactCard strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.artifactCard small {
+  color: var(--t3);
+  font: 400 9.5px var(--font-mono);
+}
+
+.artifactPreview {
+  margin-bottom: 12px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.artifactPreview header {
+  min-height: 46px;
+  padding: 8px 10px 8px 12px;
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.artifactPreview header > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.artifactPreview header strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.artifactPreview header span {
+  color: var(--t3);
+  font: 400 9.5px var(--font-mono);
+}
+
+.artifactPreview header button {
+  flex: none;
+  gap: 6px;
+}
+
+.artifactPreview img,
+.artifactPreview video {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  background: var(--bg);
+}
+
+/* the video tab never scrolls — the player card sizes itself to the visible body instead */
+.videoBody {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  container-type: size;
+}
+
+.videoPreview {
+  --video-ar: 1.7778;
+  /* hug the recording: wide enough that header (46px) + stage exactly fill the tab, never wider */
+  width: min(100%, 1100px, max(240px, calc((100cqh - 46px) * var(--video-ar))));
+  margin-right: auto;
+  margin-left: auto;
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.videoPreview header {
+  flex: none;
+}
+
+.videoStage {
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 100%;
+  aspect-ratio: var(--video-ar);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.videoStage video {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
+
+.videoError {
+  flex: none;
+  min-height: 34px;
+  padding: 7px 10px;
+  border-top: 1px solid var(--fail-tint-bd);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--fail-count);
+  background: var(--fail-tint-bg);
+  font-size: 10.5px;
+}
+
+/* ---- screenshots: gallery / list views + lightbox ---- */
+
+.screensToolbar {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.screensCount {
+  color: var(--t3);
+  font: 400 10.5px var(--font-mono);
+}
+
+.screenGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 10px;
+}
+
+.screenTile {
+  min-width: 0;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.screenTile:hover {
+  background: var(--panel);
+}
+
+.screenThumb {
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid var(--bd);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--t3);
+}
+
+.screenThumb img,
+.screenRowThumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.screenCaption {
+  min-width: 0;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.screenCaption strong,
+.screenRowText strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.screenCaption small,
+.screenRowText small {
+  color: var(--t3);
+  font: 400 9.5px var(--font-mono);
+}
+
+.screenList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.screenRow {
+  min-width: 0;
+  padding: 7px 11px 7px 7px;
+  border: 1px solid var(--bd);
+  border-radius: 7px;
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.screenRow:hover {
+  background: var(--panel);
+}
+
+.screenRowThumb {
+  flex: none;
+  width: 56px;
+  height: 36px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--t3);
+}
+
+.screenRowText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--scrim);
+}
+
+/* ---- trace viewer: inline host ⇄ enlarged overlay (same DOM node) ---- */
+
+.traceHost {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.traceOverlay {
+  position: fixed;
+  top: var(--app-titlebar-height);
+  right: 0;
+  bottom: var(--app-statusbar-height);
+  left: 0;
+  z-index: 100;
+  padding: 12px;
+  display: flex;
+  background: var(--scrim);
+}
+
+.lightboxCard {
+  min-width: min(480px, 100%);
+  max-width: min(1400px, 100%);
+  max-height: 100%;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightboxBar {
+  flex: none;
+  min-height: 46px;
+  padding: 8px 10px 8px 12px;
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lightboxBar > div:first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightboxBar strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.lightboxBar > div:first-child span {
+  color: var(--t3);
+  font: 400 9.5px var(--font-mono);
+}
+
+.lightboxActions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lightboxActions button {
+  gap: 6px;
+}
+
+.lightboxClose {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--t2);
+}
+
+.lightboxClose:hover {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.lightboxStage {
+  position: relative;
+  flex: 1;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+}
+
+.lightboxStage img {
+  display: block;
+  max-width: 100%;
+  /* window height minus overlay padding (2×28), bar (46) and card borders */
+  max-height: calc(100vh - 104px);
+  object-fit: contain;
+}
+
+.lightboxMissing {
+  max-width: 420px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--t3);
+  font-size: 11.5px;
+  text-align: left;
+}
+
+.lightboxNav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  color: var(--t2);
+  box-shadow: var(--card-shadow);
+}
+
+.lightboxNav:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--t1);
+}
+
+.lightboxNav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.lightboxPrev {
+  left: 10px;
+}
+
+.lightboxNext {
+  right: 10px;
+}

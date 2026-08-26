@@ -1,0 +1,70 @@
+.wrap {
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+}
+
+/* the inner field suppresses its own outline, so the wrap carries the ring */
+.wrap:focus-within {
+  outline: 2px solid var(--ac);
+  outline-offset: 1px;
+}
+
+/* compact sidebar-scale field (7px radius like list rows) */
+.h26 {
+  height: 26px;
+  border-radius: 7px;
+}
+
+.h30 {
+  height: 30px;
+}
+
+.h32 {
+  height: 32px;
+}
+
+.card {
+  background: var(--card);
+}
+
+.panel {
+  background: var(--panel);
+}
+
+.grow {
+  display: flex;
+  flex: 1;
+}
+
+.icon {
+  flex: none;
+  display: inline-flex;
+  color: var(--t3);
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0;
+  color: var(--t1);
+}
+
+.field::placeholder {
+  color: var(--t3);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+.dimmed {
+  opacity: 0.55;
+}
