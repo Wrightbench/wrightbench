@@ -1,7 +1,7 @@
 {
   "name": "wrightbench",
   "productName": "Wrightbench",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A desktop studio for recording, running, debugging and reviewing Playwright test suites.",
   "main": "out/main/index.js",
   "type": "module",
