@@ -103,6 +103,51 @@
   box-shadow: var(--card-shadow);
 }
 
+.recordIcon {
+  position: relative;
+  flex: none;
+  width: 11px;
+  height: 11px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.recordIconRecording {
+  color: var(--fail);
+}
+
+.recordIconRecording::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: recordPulse 1.4s ease-out infinite;
+}
+
+@keyframes recordPulse {
+  0%,
+  20% {
+    opacity: 0.65;
+    transform: scale(0.72);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recordIconRecording::after {
+    animation: none;
+    opacity: 0.65;
+    transform: none;
+  }
+}
+
 .right {
   min-width: 0;
   display: flex;
