@@ -17,6 +17,47 @@ let scaffoldProjectImpl = async () => {
   throw new Error('unexpected project scaffold')
 }
 let registeredProjects = []
+let historyRunsByPath = new Map()
+let historyRunsImpl = async (path) => historyRunsByPath.get(path) ?? []
+
+function historyAnalytics(totalRuns = 0) {
+  return {
+    passRatePct: totalRuns > 0 ? 100 : null,
+    passRatePriorPct: null,
+    avgDurationMs: totalRuns > 0 ? 100 : null,
+    avgDurationPriorMs: null,
+    flakyCount: 0,
+    rangeRuns: totalRuns,
+    runsThisWeek: totalRuns,
+    weekManual: totalRuns,
+    weekWatch: 0,
+    series: [],
+    flakiest: [],
+    regressions: [],
+    totalRuns,
+    oldestKeptAt: null,
+    filterCounts: { all: totalRuns, failed: 0, flaky: 0, watch: 0 },
+    retentionDays: 90
+  }
+}
+
+function historyRun(id, runNumber) {
+  return {
+    id,
+    runNumber,
+    trigger: 'manual',
+    commitHash: null,
+    startedAt: 1000 + id,
+    finishedAt: 1100 + id,
+    durationMs: 100,
+    status: 'passed',
+    passed: 1,
+    failed: 0,
+    flaky: 0,
+    skipped: 0,
+    total: 1
+  }
+}
 
 function target(id) {
   return {
@@ -116,6 +157,8 @@ globalThis.window = {
       get: async () => ({ workspaceUi: { projectViews: {} } })
     },
     history: {
+      runs: (...args) => historyRunsImpl(...args),
+      analytics: async (path) => historyAnalytics((historyRunsByPath.get(path) ?? []).length),
       latestTestStatuses: async () => persistedStatuses
     },
     project: {
@@ -148,6 +191,7 @@ const {
   errorMessage,
   shouldAutoStartUiMode,
   runEvidenceTabs,
+  useHistory,
   uiModeHeaderActionState,
   useRun,
   useUiMode,
@@ -343,6 +387,8 @@ registeredProjects = [
     health: { state: 'available', reason: null }
   }
 ]
+historyRunsByPath = new Map([['/existing-project', [historyRun(41, 7)]]])
+useHistory.getState().reset()
 useWorkspace.setState({
   screen: { name: 'welcome' },
   projects: [],
@@ -352,10 +398,19 @@ useWorkspace.setState({
   externalTraceOpen: false
 })
 await useWorkspace.getState().init()
+await waitFor(
+  () => useHistory.getState().projectPath === '/existing-project' && !useHistory.getState().loading,
+  'startup report history hydration'
+)
 assert.equal(useWorkspace.getState().screen.name, 'workspace')
 assert.equal(useWorkspace.getState().activeProjectId, 'existing-project')
 assert.equal(useWorkspace.getState().uiModeOpen, true)
 assert.equal(useWorkspace.getState().historyOpen, false)
+assert.deepEqual(
+  useHistory.getState().runs,
+  [historyRun(41, 7)],
+  'a cold renderer hydrates existing SQLite-backed runs without waiting for a new run'
+)
 
 registeredProjects = []
 const missingPlaywrightTarget = { ...first, playwrightVersion: null }
@@ -649,5 +704,23 @@ assert.deepEqual(
   'live runs expose only their streaming overview'
 )
 console.log('  ok  run detail advertises only evidence that was retained')
+
+const switchedProjectRun = historyRun(52, 3)
+const pendingSwitchHistory = deferred()
+historyRunsImpl = async (path) =>
+  path === '/switch-project'
+    ? pendingSwitchHistory.promise
+    : (historyRunsByPath.get(path) ?? [])
+const switchedHistoryRefresh = useHistory.getState().refresh('/switch-project')
+await useRun.getState().initWorkspace('/switch-project')
+pendingSwitchHistory.resolve([switchedProjectRun])
+await switchedHistoryRefresh
+assert.equal(useHistory.getState().projectPath, '/switch-project')
+assert.deepEqual(
+  useHistory.getState().runs,
+  [switchedProjectRun],
+  'old-project session teardown cannot cancel the new project Report hydration'
+)
+console.log('  ok  project switches preserve the successor SQLite Report refresh')
 
 console.log('\nall run-store tests passed')

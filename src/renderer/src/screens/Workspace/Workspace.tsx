@@ -77,7 +77,7 @@ function formatElapsed(ms: number): string {
 }
 
 function RunsStatusBar({ project }: { project: ProjectInfo }): JSX.Element {
-  const analytics = useHistory((s) => s.analytics)
+  const analytics = useHistory((s) => (s.projectPath === project.path ? s.analytics : null))
   const monoParts = [
     project.nodeVersion ? `Node ${project.nodeVersion}` : null,
     project.playwrightVersion ? `Playwright v${project.playwrightVersion}` : null

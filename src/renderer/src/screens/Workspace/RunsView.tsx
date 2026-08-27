@@ -259,12 +259,14 @@ function RunsTable({
   runs,
   selectedRunId,
   onSelectRun,
-  dateRange
+  dateRange,
+  loading
 }: {
   runs: RunRecord[]
   selectedRunId: number | null
   onSelectRun?: (runId: number) => void
   dateRange: { preset: string; from: number | null; to: number | null }
+  loading: boolean
 }): JSX.Element {
   return (
     <div className={styles.tableCard}>
@@ -306,10 +308,16 @@ function RunsTable({
           )
         })}
         {runs.length === 0 && (
-          <div className={styles.emptyNote}>
-            {dateRange.preset === 'all'
-              ? 'No runs recorded yet.'
-              : 'No runs in this date range.'}
+          <div className={styles.emptyNote} role={loading ? 'status' : undefined}>
+            {loading ? (
+              <>
+                <Spinner size={11} /> Loading reports…
+              </>
+            ) : dateRange.preset === 'all' ? (
+              'No runs recorded yet.'
+            ) : (
+              'No runs in this date range.'
+            )}
           </div>
         )}
       </div>
@@ -406,10 +414,13 @@ export function RunsView({
   const runs = useHistory((s) => s.runs)
   const analytics = useHistory((s) => s.analytics)
   const error = useHistory((s) => s.error)
+  const projectPath = useHistory((s) => s.projectPath)
+  const loading = useHistory((s) => s.loading)
   const refresh = useHistory((s) => s.refresh)
   const lastRun = useRun((s) => s.lastRun)
   const uiLastSavedAt = useUiMode((s) => s.lastSaved?.at ?? null)
   const dateRange = useHistory((s) => s.dateRange)
+  const projectLoaded = projectPath === path
 
   useEffect(() => {
     void refresh(path)
@@ -426,15 +437,16 @@ export function RunsView({
   return (
     <div className={styles.body}>
       <div className={styles.content}>
-        {error && <div className={styles.emptyNote}>{error}</div>}
-        {analytics && <StatTiles analytics={analytics} />}
-        {analytics && <AttentionPanels analytics={analytics} />}
-        {analytics && <PassRateChart analytics={analytics} />}
+        {projectLoaded && error && <div className={styles.emptyNote}>{error}</div>}
+        {projectLoaded && analytics && <StatTiles analytics={analytics} />}
+        {projectLoaded && analytics && <AttentionPanels analytics={analytics} />}
+        {projectLoaded && analytics && <PassRateChart analytics={analytics} />}
         <RunsTable
-          runs={runs}
+          runs={projectLoaded ? runs : []}
           selectedRunId={selectedRunId}
           onSelectRun={onSelectRun}
           dateRange={dateRange}
+          loading={!projectLoaded || loading}
         />
       </div>
     </div>

@@ -258,11 +258,13 @@ export function HistoryView({ project }: { project: ProjectInfo }): JSX.Element 
   const setDateRange = useHistory((state) => state.setDateRange)
   const runs = useHistory((state) => state.runs)
   const analytics = useHistory((state) => state.analytics)
+  const projectPath = useHistory((state) => state.projectPath)
   const [selectedRunId, setSelectedRunId] = useState<number | null>(null)
+  const projectRuns = projectPath === project.path ? runs : []
 
   const selectedRun = useMemo(
-    () => runs.find((run) => run.id === selectedRunId) ?? null,
-    [runs, selectedRunId]
+    () => projectRuns.find((run) => run.id === selectedRunId) ?? null,
+    [projectRuns, selectedRunId]
   )
 
   useEffect(() => {
@@ -274,7 +276,7 @@ export function HistoryView({ project }: { project: ProjectInfo }): JSX.Element 
       <HistoryRunView
         project={project}
         run={selectedRun}
-        runs={runs}
+        runs={projectRuns}
         onBack={() => setSelectedRunId(null)}
         onSelectRun={setSelectedRunId}
       />
@@ -291,7 +293,7 @@ export function HistoryView({ project }: { project: ProjectInfo }): JSX.Element 
           <DateRangePicker
             value={dateRange}
             onChange={setDateRange}
-            minDate={analytics?.oldestKeptAt ?? undefined}
+            minDate={projectPath === project.path ? analytics?.oldestKeptAt ?? undefined : undefined}
             ariaLabel="Filter reports by date range"
           />
         </div>

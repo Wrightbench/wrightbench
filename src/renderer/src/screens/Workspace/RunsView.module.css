@@ -200,6 +200,9 @@
 }
 
 .emptyNote {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   padding: 16px;
   color: var(--t3);
   font-size: 12.5px;
