@@ -143,6 +143,19 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+async function focusInspectedPage(page) {
+  // Start recording is an explicit handoff to the headed browser. Activate it
+  // once while the page is being created; Inspector readiness and later state
+  // replays must never steal focus back from whatever the user chose next.
+  try {
+    if (page.delegate && typeof page.delegate.bringToFront === 'function') {
+      await page.delegate.bringToFront()
+    }
+  } catch {
+    // Window activation is best-effort and must never block a Record session.
+  }
+}
+
 async function maximizeAndMeasure(page, fallback) {
   // --start-maximized is respected by normal Chromium launches. The explicit
   // bounds request handles installations/platforms that create the first page
@@ -410,6 +423,7 @@ async function start(config) {
   bindRecorderEvents()
 
   page = await runWithProgress(progress => context.newPage(progress))
+  await focusInspectedPage(page)
   if (nativeMaximize) {
     // Keep the genuine browser naturally maximized, but give the generator the
     // measured fixed dimensions so copied tests remain deterministic.

@@ -33,6 +33,14 @@ test('embedded Record host is valid standalone CommonJS', () => {
   assert.match(CODEGEN_HOST_SOURCE, /noDefaultViewport: true/)
   assert.match(CODEGEN_HOST_SOURCE, /window\.innerWidth/)
   assert.match(CODEGEN_HOST_SOURCE, /generatorOptions\.contextOptions = \{ viewport \}/)
+  assert.match(CODEGEN_HOST_SOURCE, /page\.delegate\.bringToFront\(\)/)
+  assert.equal(CODEGEN_HOST_SOURCE.match(/await focusInspectedPage\(page\)/g)?.length, 1)
+  const pageCreated = CODEGEN_HOST_SOURCE.indexOf(
+    'page = await runWithProgress(progress => context.newPage(progress))'
+  )
+  const focused = CODEGEN_HOST_SOURCE.indexOf('await focusInspectedPage(page)', pageCreated)
+  const navigated = CODEGEN_HOST_SOURCE.indexOf('page.mainFrame().goto(progress, initialUrl)', focused)
+  assert.ok(pageCreated >= 0 && focused > pageCreated && navigated > focused)
   assert.doesNotMatch(CODEGEN_HOST_SOURCE, /screenshot\(/)
 })
 

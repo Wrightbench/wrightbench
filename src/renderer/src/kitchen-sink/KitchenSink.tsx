@@ -151,6 +151,8 @@ export default function KitchenSink(): JSX.Element {
                 </Button>
               }
               activeDestination="reports"
+              recording
+              onRecordClick={() => {}}
               onUiModeClick={() => {}}
               onReportsClick={() => {}}
               onSettingsClick={() => {}}
@@ -166,6 +168,7 @@ export default function KitchenSink(): JSX.Element {
                 </Button>
               }
               activeDestination="ui-mode"
+              onRecordClick={() => {}}
               onUiModeClick={() => {}}
               onReportsClick={() => {}}
               settingsActive

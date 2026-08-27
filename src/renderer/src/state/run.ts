@@ -420,7 +420,6 @@ export const useRun = create<RunStore>((set, get) => {
     void wb.report.stop(previous)
     void wb.traces.stop(previous)
     void wb.codegen.stop(previous)
-    useHistory.getState().reset()
   }
 
   if (window.wrightbench) {
@@ -996,6 +995,10 @@ export const useRun = create<RunStore>((set, get) => {
     teardownWorkspace() {
       const previous = get().path
       if (previous) stopProjectSessions(previous)
+      // The final project is gone, so there is no successor Report snapshot
+      // to hydrate. Project-to-project changes keep history alive and let the
+      // new project-scoped refresh replace it instead.
+      useHistory.getState().reset()
       useUiMode.getState().handleProjectSwitch(previous, null)
       useCodegen.getState().resetForProject(null, null)
       wasInterrupted = false

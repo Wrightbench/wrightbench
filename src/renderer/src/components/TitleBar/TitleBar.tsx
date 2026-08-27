@@ -20,6 +20,8 @@ export interface TitleBarProps {
   projectControl?: ReactNode
   /** direct workspace destination navigation; active clicks are intentionally idempotent */
   activeDestination?: 'record' | 'ui-mode' | 'reports'
+  /** a headed Record browser is starting, ready, or stopping */
+  recording?: boolean
   onRecordClick?: () => void
   onUiModeClick?: () => void
   onReportsClick?: () => void
@@ -38,6 +40,7 @@ export function TitleBar({
   onSidebarToggle,
   projectControl,
   activeDestination,
+  recording = false,
   onRecordClick,
   onUiModeClick,
   onReportsClick,
@@ -72,9 +75,16 @@ export function TitleBar({
                   : styles.primaryNavButton
               }
               aria-current={activeDestination === 'record' ? 'page' : undefined}
+              aria-label={recording ? 'Record — recording in progress' : undefined}
+              title={recording ? 'Recording in progress' : undefined}
               onClick={onRecordClick}
             >
-              <Icon name="record" size={11} />
+              <span
+                className={`${styles.recordIcon}${recording ? ` ${styles.recordIconRecording}` : ''}`}
+                aria-hidden
+              >
+                <Icon name="record" size={11} />
+              </span>
               Record
             </button>
           )}

@@ -8,3 +8,4 @@ export { uiModeHeaderActionState } from '../src/renderer/src/screens/UiMode/head
 export { runEvidenceTabs } from '../src/renderer/src/screens/Workspace/run-evidence-tabs'
 export { errorMessage } from '../src/renderer/src/lib/errors'
 export { useWorkspace } from '../src/renderer/src/state/workspace'
+export { useHistory } from '../src/renderer/src/state/history'

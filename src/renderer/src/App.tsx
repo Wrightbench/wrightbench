@@ -8,6 +8,7 @@ import { UiModeHeaderActions } from './screens/UiMode/UiModeView'
 import { Welcome } from './screens/Welcome/Welcome'
 import { ProjectSwitcher } from './screens/Workspace/ProjectSwitcher'
 import { Workspace } from './screens/Workspace/Workspace'
+import { useCodegen } from './state/codegen'
 import { useSidebar } from './state/sidebar'
 import { useTraces } from './state/traces'
 import { useWorkspace } from './state/workspace'
@@ -167,6 +168,7 @@ export default function App(): JSX.Element {
   const uiModeOpen = useWorkspace((s) => s.uiModeOpen)
   const recordOpen = useWorkspace((s) => s.recordOpen)
   const historyOpen = useWorkspace((s) => s.historyOpen)
+  const recording = useCodegen((s) => s.recording)
   const sidebarCollapsed = useSidebar((s) => s.collapsed)
   const toggleSidebar = useSidebar((s) => s.toggleCollapsed)
   const init = useWorkspace((s) => s.init)
@@ -360,6 +362,7 @@ export default function App(): JSX.Element {
             }
             projectControl={active ? <ProjectSwitcher placement="titlebar" /> : undefined}
             activeDestination={recordOpen ? 'record' : historyOpen ? 'reports' : 'ui-mode'}
+            recording={recording}
             onRecordClick={active ? openRecord : undefined}
             onUiModeClick={active ? openUiMode : undefined}
             onReportsClick={active ? openReports : undefined}

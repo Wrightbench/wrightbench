@@ -79,7 +79,7 @@ export function SettingsView({
   const meterPct = Math.min(100, (totalBytes / (settings.artifactBudgetGb * 1024 ** 3)) * 100)
   const captureCaption =
     settings.captureMode === 'full'
-      ? 'Wrightbench records a trace, screenshot and video for every browser test attempt.'
+      ? 'Records a trace, screenshot and video for every browser test attempt.'
       : settings.captureMode === 'balanced'
         ? 'Full traces for focused tests; suite failures retain trace evidence.'
         : 'Failure traces are retained; project-reported attachments are preserved.'

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { errorMessage } from '../lib/errors'
+import { useHistory } from './history'
 import { useRun } from './run'
 import { useUiMode } from './uimode'
 import type { ProjectInspection, ProjectWithHealth } from '@shared/ipc'
@@ -170,6 +171,9 @@ export const useWorkspace = create<WorkspaceStore>((set, get) => {
       } else {
         set({ projects, activeProjectId: latest?.id ?? null })
       }
+      // Report is SQLite-owned and must be ready independently of whether a
+      // new Playwright run occurs during this renderer session.
+      if (latest) void useHistory.getState().refresh(latest.path)
     },
 
     async pickAndInspect() {
@@ -343,6 +347,7 @@ export const useWorkspace = create<WorkspaceStore>((set, get) => {
           externalTraceOpen: false,
           lastError: null
         })
+        if (added) void useHistory.getState().refresh(added.path)
       } catch (err) {
         set({ lastError: `could not save project — ${errorMessage(err)}` })
       }
@@ -400,7 +405,9 @@ export const useWorkspace = create<WorkspaceStore>((set, get) => {
       // Project scope changes independently from the chosen destination.
       // initWorkspace drains the old project's session; keeping uiModeOpen
       // lets the new project resolve and open in the same global mode.
+      const project = get().projects.find((candidate) => candidate.id === id) ?? null
       set({ activeProjectId: id, externalTraceOpen: false })
+      if (project) void useHistory.getState().refresh(project.path)
     },
 
     async removeProject(id) {
@@ -431,6 +438,7 @@ export const useWorkspace = create<WorkspaceStore>((set, get) => {
           activeProjectId: successor.id,
           lastError: null
         })
+        void useHistory.getState().refresh(successor.path)
         return
       }
       // final project removed: explicit teardown — there is no next path whose
@@ -528,6 +536,8 @@ export const useWorkspace = create<WorkspaceStore>((set, get) => {
       // History is read-only navigation. Keep an idle or active UI Mode
       // session mounted behind it and never alter execution ownership here.
       set({ historyOpen: true, recordOpen: false, externalTraceOpen: false, settingsOpen: false })
+      const active = resolveActive(get().projects, get().activeProjectId)
+      if (active) void useHistory.getState().refresh(active.path)
     },
 
     closeUiMode() {

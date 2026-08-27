@@ -19,6 +19,7 @@
   --brand-primary: #2ead33;
   --brand-secondary: #e2574c;
   --brand-slate: #2d4552;
+  --brand-logo-bg: #24313a;
   --brand-mark: #248a2b;
   --brand-wordmark: #24313a;
   --brand-heading: var(--brand-slate);
@@ -93,7 +94,8 @@
   --brand-primary: #2ead33;
   --brand-secondary: #e2574c;
   --brand-slate: #2d4552;
-  --brand-mark: #55c85a;
+  --brand-logo-bg: #24313a;
+  --brand-mark: #248a2b;
   --brand-wordmark: #f5f6f7;
   --brand-heading: #f5f6f7;
 

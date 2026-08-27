@@ -16,6 +16,8 @@ export const ALL_HISTORY_RANGE: HistoryRange = {
 interface HistoryStore {
   /** calendar window shared by every project-level Reports surface */
   dateRange: HistoryRange
+  /** project whose SQLite snapshot is currently represented below */
+  projectPath: string | null
   runs: RunRecord[]
   analytics: HistoryAnalytics | null
   loading: boolean
@@ -23,7 +25,7 @@ interface HistoryStore {
 
   refresh(path: string): Promise<void>
   setDateRange(range: HistoryRange): void
-  /** clear on project switch so A's data never renders under B */
+  /** clear when the workspace no longer has a project */
   reset(): void
 }
 
@@ -31,6 +33,7 @@ let refreshSeq = 0
 
 export const useHistory = create<HistoryStore>((set, get) => ({
   dateRange: ALL_HISTORY_RANGE,
+  projectPath: null,
   runs: [],
   analytics: null,
   loading: false,
@@ -40,16 +43,22 @@ export const useHistory = create<HistoryStore>((set, get) => ({
     const wb = window.wrightbench
     if (!wb) return
     const seq = ++refreshSeq
-    set({ loading: true, error: null })
+    const projectChanged = get().projectPath !== path
+    set({
+      projectPath: path,
+      loading: true,
+      error: null,
+      ...(projectChanged ? { runs: [], analytics: null } : {})
+    })
     try {
       const [runs, analytics] = await Promise.all([
         wb.history.runs(path, get().dateRange, 500),
         wb.history.analytics(path, get().dateRange)
       ])
-      if (seq !== refreshSeq) return
+      if (seq !== refreshSeq || get().projectPath !== path) return
       set({ runs, analytics, loading: false })
     } catch (err) {
-      if (seq !== refreshSeq) return
+      if (seq !== refreshSeq || get().projectPath !== path) return
       set({ loading: false, error: err instanceof Error ? err.message : String(err) })
     }
   },
@@ -63,6 +72,7 @@ export const useHistory = create<HistoryStore>((set, get) => ({
     refreshSeq += 1 // invalidate any in-flight refresh
     set({
       dateRange: ALL_HISTORY_RANGE,
+      projectPath: null,
       runs: [],
       analytics: null,
       loading: false,
